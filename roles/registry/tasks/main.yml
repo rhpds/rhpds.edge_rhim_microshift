@@ -21,7 +21,7 @@
     ansible.builtin.copy:
       content: |
         [[registry]]
-        location = "registry:5000"
+        location = "localhost:5000"
         insecure = true
       dest: /etc/containers/registries.conf.d/insecure-registry.conf
       mode: '0644'
