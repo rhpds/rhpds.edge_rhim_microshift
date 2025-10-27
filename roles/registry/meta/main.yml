@@ -1,0 +1,9 @@
+galaxy_info:
+  role_name: registry_role
+  author: treddy
+  description: registry role
+  license: "GPLv2"
+  min_ansible_version: "2.9"
+  galaxy_tags:
+    - bastion
+  dependencies: []

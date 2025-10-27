@@ -1,0 +1,11 @@
+---
+# -----------------------------------------------------
+# ZeroSSL
+# -----------------------------------------------------
+certbot_cert_manager_provider: zerossl #if you want to use letsencrypt use certbot_cert_manager_provider: letsencrypt
+certbot_cert_manager_zerossl_eab_key_id: unknown
+certbot_cert_manager_zerossl_hmac_key: unknown
+certbot_cert_manager_acme_url: https://acme.zerossl.com/v2/DV90
+
+lb1353_registry_encrypt_email: "{{ email | default('devops@demo.redhat.com') }}"
+lb1353_registry_hostname: "registry.{{guid}}.{{ cluster_dns_zone }}"
