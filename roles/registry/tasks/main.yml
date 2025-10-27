@@ -1,42 +1,5 @@
 ---
 - block:
-  - name: Enable EPEL
-    ansible.builtin.dnf:
-      name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
-      state: present
-      disable_gpg_check: true
-
-  - name: Install nginx and certbot packages
-    ansible.builtin.dnf:
-      name:
-        - nginx
-        - certbot
-        - python3-certbot-nginx
-        - python3-pyOpenSSL
-      state: latest  # so that EPEL packages can upgrade RHEL ones
-
-  - name: Remove EPEL after usage
-    ansible.builtin.dnf:
-      name: "epel-release"
-      state: absent
-
-  - name: Nginx | generate certbot certificate
-    when: certbot_cert_manager_provider != 'zerossl'
-    ansible.builtin.command: >-
-      certbot certonly --nginx
-      {% if certbot_cert_manager_provider == 'zerossl' %}
-      --eab-kid {{ certbot_cert_manager_zerossl_eab_key_id | ansible.builtin.quote }}
-      --eab-hmac-key {{ certbot_cert_manager_zerossl_hmac_key | ansible.builtin.quote }}
-      --server {{ certbot_cert_manager_acme_url | ansible.builtin.quote }}
-      {% endif %}
-      -m {{ lb1353_registry_encrypt_email | regex_replace('example.com$','opentlc.com') | ansible.builtin.quote }}
-      -d {{ lb1353_registry_hostname | ansible.builtin.quote }}
-      --noninteractive --agree-tos
-    register: r_certbot
-    until: r_certbot is successful
-    retries: 6
-    delay: 10
-
   - name: Create registry pod directory
     ansible.builtin.file:
       path: "{{ item }}"
@@ -46,28 +9,23 @@
       - /opt/registry/certs
       - /opt/registry/data
 
-  - name: Copy ZeroSSL Cert
-    ansible.builtin.copy:
-      src: /etc/letsencrypt/live/{{ lb1353_registry_hostname }}/fullchain.pem
-      dest: /opt/registry/certs/registry.crt
-      remote_src: true
-      mode: 0644
-
-  - name: Copy ZeroSSL key
-    ansible.builtin.copy:
-      src: /etc/letsencrypt/live/{{ lb1353_registry_hostname }}/privkey.pem
-      dest: /opt/registry/certs/registry.key
-      remote_src: true
-      mode: 0644
-
   - name: Create the local registry pod for images
     ansible.builtin.command: >-
       podman run -d --name registry
-      -p 443:5000
+      -p 5000:5000
       -v /opt/registry/data:/var/lib/registry:z
       -v /opt/registry/certs:/certs:z
       -e "REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt"
       -e "REGISTRY_HTTP_TLS_KEY=/certs/registry.key"
       --restart always
       docker.io/library/registry:2
+
+  - name: Configure podman to allow insecure registry
+    ansible.builtin.copy:
+      content: |
+        [[registry]]
+        location = "registry:5000"
+        insecure = true
+      dest: /etc/containers/registries.conf.d/insecure-registry.conf
+      mode: '0644'
   delegate_to: registry
