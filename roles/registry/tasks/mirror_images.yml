@@ -1,8 +1,8 @@
 ---
 # Mirror container images to local registry
-# Requires: username and password variables (from secrets)
+# Optional: username and password variables (from secrets) for authenticated registries
 
-- name: Login to Quay.io
+- name: Login to Quay.io (if credentials provided)
   containers.podman.podman_login:
     username: "{{ username }}"
     password: "{{ password }}"
@@ -10,7 +10,10 @@
   when:
     - username is defined
     - password is defined
-  no_log: true
+    - username | length > 0
+    - password | length > 0
+  failed_when: false
+  delegate_to: registry
 
 - name: Pull and mirror images to local registry
   ansible.builtin.shell: |
