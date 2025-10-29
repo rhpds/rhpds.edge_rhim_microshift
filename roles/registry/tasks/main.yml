@@ -25,4 +25,9 @@
         insecure = true
       dest: /etc/containers/registries.conf.d/insecure-registry.conf
       mode: '0644'
+
+  - name: Mirror images to local registry
+    ansible.builtin.include_tasks: mirror_images.yml
+    when: registry_mirror_images | default(true)
+
   delegate_to: registry

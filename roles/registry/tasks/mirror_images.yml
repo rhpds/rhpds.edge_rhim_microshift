@@ -1,0 +1,31 @@
+---
+# Mirror container images to local registry
+# Requires: username and password variables (from secrets)
+
+- name: Login to Quay.io
+  containers.podman.podman_login:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    registry: quay.io
+  when:
+    - username is defined
+    - password is defined
+  no_log: true
+
+- name: Pull and mirror images to local registry
+  ansible.builtin.shell: |
+    podman pull {{ item }}
+    podman tag {{ item }} localhost:5000/{{ item | regex_replace('^.*?/', '') }}
+    podman push localhost:5000/{{ item | regex_replace('^.*?/', '') }}
+  loop: "{{ registry_images_to_mirror }}"
+  register: r_mirror_images
+  retries: 3
+  delay: 10
+  until: r_mirror_images is success
+  delegate_to: registry
+
+- name: Display mirrored images summary
+  ansible.builtin.debug:
+    msg:
+      - "Successfully mirrored {{ registry_images_to_mirror | length }} images to local registry"
+      - "Images available at: registry:5000/<image-name>"
