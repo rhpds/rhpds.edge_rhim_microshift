@@ -20,18 +20,26 @@
 - name: Pull and mirror images to local registry
   ansible.builtin.shell: |
     export REGISTRY_AUTH_FILE=/tmp/pull-secret.json
-    # Pull the image by digest
+    # Pull the image
     podman pull {{ item }}
     # Get the image ID
     IMAGE_ID=$(podman images --filter reference={{ item }} --format "{{ '{{' }}.ID{{ '}}' }}" | head -1)
-    # Extract short digest for tag name (last 12 chars of sha256)
-    SHORT_DIGEST=$(echo "{{ item }}" | grep -o 'sha256:[a-f0-9]*' | cut -d: -f2 | cut -c1-12)
-    # Create tag name from image name
-    IMAGE_NAME=$(echo "{{ item }}" | sed 's|@sha256:.*||' | sed 's|.*/||')
-    # Tag with digest-based name
-    podman tag ${IMAGE_ID} localhost:5000/${IMAGE_NAME}:${SHORT_DIGEST}
-    # Push to local registry
-    podman push localhost:5000/${IMAGE_NAME}:${SHORT_DIGEST}
+
+    # Check if this is a digest-based image or tag-based image
+    if echo "{{ item }}" | grep -q '@sha256:'; then
+      # Digest-based image
+      SHORT_DIGEST=$(echo "{{ item }}" | grep -o 'sha256:[a-f0-9]*' | cut -d: -f2 | cut -c1-12)
+      IMAGE_NAME=$(echo "{{ item }}" | sed 's|@sha256:.*||' | sed 's|.*/||')
+      TAG="${SHORT_DIGEST}"
+    else
+      # Tag-based image
+      IMAGE_NAME=$(echo "{{ item }}" | sed 's|.*\/||' | cut -d: -f1)
+      TAG=$(echo "{{ item }}" | grep -o ':[^:]*$' | sed 's|:||')
+    fi
+
+    # Tag and push to local registry
+    podman tag ${IMAGE_ID} localhost:5000/${IMAGE_NAME}:${TAG}
+    podman push localhost:5000/${IMAGE_NAME}:${TAG}
   loop: "{{ registry_images_to_mirror }}"
   register: r_mirror_images
   retries: 3
