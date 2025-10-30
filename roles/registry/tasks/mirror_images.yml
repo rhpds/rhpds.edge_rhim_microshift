@@ -17,6 +17,13 @@
   no_log: true
   delegate_to: registry
 
+- name: Login to registry.redhat.io for LVMS images
+  ansible.builtin.shell: |
+    podman login registry.redhat.io -u "{{ registry_credentials_username }}" -p "{{ registry_credentials_password }}"
+  when: registry_credentials_username is defined and registry_credentials_password is defined
+  no_log: true
+  delegate_to: registry
+
 - name: Pull and mirror images to local registry
   ansible.builtin.shell: |
     export REGISTRY_AUTH_FILE=/tmp/pull-secret.json
