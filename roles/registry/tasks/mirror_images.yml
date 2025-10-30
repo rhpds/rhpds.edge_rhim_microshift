@@ -46,7 +46,7 @@
 
     # Tag and push to local registry
     podman tag ${IMAGE_ID} localhost:5000/${IMAGE_NAME}:${TAG}
-    podman push localhost:5000/${IMAGE_NAME}:${TAG}
+    podman push --remove-signatures localhost:5000/${IMAGE_NAME}:${TAG}
   loop: "{{ registry_images_to_mirror }}"
   register: r_mirror_images
   retries: 3
