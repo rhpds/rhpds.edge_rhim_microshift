@@ -1,5 +1,10 @@
 ---
 - block:
+  - name: Install skopeo
+    ansible.builtin.package:
+      name: skopeo
+      state: present
+
   - name: Create registry pod directory
     ansible.builtin.file:
       path: "{{ item }}"

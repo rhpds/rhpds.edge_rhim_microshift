@@ -1,0 +1,6 @@
+---
+- hosts: registry
+  vars:
+    ocp4_pull_secret: '<pull_secret>'
+  roles:
+    - role: registry

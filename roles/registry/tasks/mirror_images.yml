@@ -27,27 +27,25 @@
 - name: Pull and mirror images to local registry
   ansible.builtin.shell: |
     export REGISTRY_AUTH_FILE=/tmp/pull-secret.json
-    # Pull the image
-    podman pull {{ item }}
-    # Get the image ID
-    IMAGE_ID=$(podman images --filter reference={{ item }} --format "{{ '{{' }}.ID{{ '}}' }}" | head -1)
-
-    # Check if this is a digest-based image or tag-based image
-    if echo "{{ item }}" | grep -q '@sha256:'; then
-      # Digest-based image
-      SHORT_DIGEST=$(echo "{{ item }}" | grep -o 'sha256:[a-f0-9]*' | cut -d: -f2 | cut -c1-12)
-      IMAGE_NAME=$(echo "{{ item }}" | sed 's|@sha256:.*||' | sed 's|.*/||')
-      TAG="${SHORT_DIGEST}"
+    SOURCE_IMAGE="{{ item }}"
+    # Extract repository path by removing registry hostname (everything up to first slash)
+    # Examples:
+    #   quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:... -> openshift-release-dev/ocp-v4.0-art-dev@sha256:...
+    #   registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:... -> lvms4/lvms-rhel9-operator@sha256:...
+    #   docker.io/library/wordpress:6.2.1-apache -> library/wordpress:6.2.1-apache
+    DEST_IMAGE="localhost:5000/{{ item | regex_replace('^[^/]+/', '') }}"
+    
+    # Determine if image should be copied with --all flag (multi-arch images)
+    if [[ "${SOURCE_IMAGE}" == *"lvm"* || "${SOURCE_IMAGE}" == *"ubi"* ]]; then
+      skopeo copy --all --preserve-digests --dest-tls-verify=false \
+        "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
     else
-      # Tag-based image
-      IMAGE_NAME=$(echo "{{ item }}" | sed 's|.*\/||' | cut -d: -f1)
-      TAG=$(echo "{{ item }}" | grep -o ':[^:]*$' | sed 's|:||')
+      skopeo copy --preserve-digests --dest-tls-verify=false \
+        "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
     fi
-
-    # Tag and push to local registry
-    podman tag ${IMAGE_ID} localhost:5000/${IMAGE_NAME}:${TAG}
-    podman push --remove-signatures localhost:5000/${IMAGE_NAME}:${TAG}
   loop: "{{ registry_images_to_mirror }}"
+  loop_control:
+    label: "{{ item }}"
   register: r_mirror_images
   retries: 3
   delay: 10

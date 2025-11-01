@@ -4,6 +4,16 @@ registry_mirror_images: true
 
 # Container Images to be mirrored to the Registry host
 registry_images_to_mirror:
+  # MicroShift 4.20
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0a9d58f9d8dd969c7bd107319a2498a674fe4e6477185a44558f168d994b39a5
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:54fe7a9a17579203f5cf7d3eae5cbfba051a9f2a98922d6cb19b33c9a2ef1e6c
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0f3b6562297860a94726c550248a910506b8d20ce1204729e11a4086165c1ac5
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:5a8ae4c499eb77d64d2ad321959db0dbb6da86d25b389d7857465140067ef1e8
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:7eb4b2915c31f1960b5dd77536e1b42a34776475a35b92a8f06c64c462a338f0
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:eb6c92d8d659c35575582a0683a711c2b12bdc2f88fa5b5a7f15c715f0850610
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ae6485fac87a0090a3ff180b02e3d767c52fc8134fb8d7cc1b6a0624d5ee984c
+  - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:58804d8baf922927b66cec9424d431a3bdb341d207024ce40cc8f0123bac03ee
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:54bc30e4861f9734f6921389a7be5ba355e09c702bf7b6b8d1c81cf0330a6fc3
   # MicroShift 4.19
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:b9be4bae2a5829f2344df5d703191e2bb480dcff4190167b72b2f14c60f07c11
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:6bf17269ce3887fcf3dfc69a784d5d6cff3cf7d99f98730c5c1563c71de1c951
@@ -12,17 +22,20 @@ registry_images_to_mirror:
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:6df6111c4ee411542630b4d6c99fc2b7ef3073c314608239f052098ecaf63b57
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a5438dbef229d866d49b12f3fca322dd1750384544f973baa70e588e1790c7c4
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:8176ef1007f4388b4d9ec495289f1a20856187079176decae462e5fe8bf989b8
+  - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:c5f0ad26372afdd4d3e6a37fdb5cdf0c91304c0e994ec885e2db89e851081504
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:49c985f2e3a9c041efc07f046a1d2b2525abf44c8fce2f3d9b816d5505b0913b
 
   # MicroShift 4.18
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:f7f22715774ed259aa58dddcc2f84fe1e0500a8568d4f4f17d43b809ab7a6823
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:45b62bd3845bf1814b3cea858b5d7786bdcaab54b472cc36a2e973a470515f75
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:dcd5c10d7cf8eaf23ff656fe49423c9e56db8e446250ce5c0d649993edd5374d
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:2c6ef087559800e0213384aca723de973f3bd5c9a800d80fe5fb0393c96436b1
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:95c9479d2ff2ff490f89beeb3da7481139f6b0275df91cd58036d654db1aa82b
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:b1d23455b65e7c58778976292dfabb1cf4f69c746f1a734766f0c21d70333dbb
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:d5c224beaeec38ca8c29d3712cc2fe84a99dd86bab1eb481dd32e71e6c95875d
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:f56f50da31da9a0329e11906ed5731c469988e9c0af9abfed821a85066d2cfd6
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fb00cad5bf4c467ebed7ae645287f5927fd9ef40b4a7b52affa80b024d59d583
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:4f6294ed30ab476019aaaa77874157facc77413988f82ffc46f94d3a98d2e4f1
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e1eb49c0c126c193cd035f844746edd98c6c674fdfa6b822d078d4a491b4834d
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:b6413e64e7d5885315b3cabc65c2af82135ee649b1664976b3d300884d302414
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:04cba22b84d152a979e3199c0d85185975a8f42440a55927e84c831539b1657b
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:2f61599219ee63c77391e05d2e02a8a5baae1c463d0ef965c49a5c470546db90
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:4519833d863edb9decbfc3a3a50a6fb55bea133e46be24d4be83b57ef96bf3e9
+  - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:bd6dc4d6e90fdbcdb844759e203c9c591abc5ac29a956257a90bda101a37b76e
+  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:6771ff316058a27d66103d16d0c8c2f10afb96970026025668aa09d0b9fde5bb
+
 
   # MicroShift 4.20
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0a9d58f9d8dd969c7bd107319a2498a674fe4e6477185a44558f168d994b39a5
