@@ -24,25 +24,27 @@
   no_log: true
   delegate_to: registry
 
+- name: Create skopeo policy file to allow insecure images
+
+  ansible.builtin.copy:
+    content: |
+      {
+        "default": [
+          {
+            "type": "insecureAcceptAnything"
+          }
+        ]
+      }
+    dest: /tmp/policy.json
+    mode: '0644'
+  delegate_to: registry
+
 - name: Pull and mirror images to local registry
   ansible.builtin.shell: |
     export REGISTRY_AUTH_FILE=/tmp/pull-secret.json
     SOURCE_IMAGE="{{ item }}"
-    # Extract repository path by removing registry hostname (everything up to first slash)
-    # Examples:
-    #   quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:... -> openshift-release-dev/ocp-v4.0-art-dev@sha256:...
-    #   registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:... -> lvms4/lvms-rhel9-operator@sha256:...
-    #   docker.io/library/wordpress:6.2.1-apache -> library/wordpress:6.2.1-apache
     DEST_IMAGE="localhost:5000/{{ item | regex_replace('^[^/]+/', '') }}"
-    
-    # Determine if image should be copied with --all flag (multi-arch images)
-    if [[ "${SOURCE_IMAGE}" == *"lvm"* || "${SOURCE_IMAGE}" == *"ubi"* ]]; then
-      skopeo copy --all --preserve-digests --dest-tls-verify=false \
-        "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
-    else
-      skopeo copy --preserve-digests --dest-tls-verify=false \
-        "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
-    fi
+    skopeo copy --policy /tmp/policy.json --all --preserve-digests --dest-tls-verify=false "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
   loop: "{{ registry_images_to_mirror }}"
   loop_control:
     label: "{{ item }}"
