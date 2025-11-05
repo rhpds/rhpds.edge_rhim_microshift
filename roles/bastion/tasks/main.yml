@@ -1,0 +1,7 @@
+---
+- block:
+  - name: Write bastion tasks here
+    debug:
+      msg: Bastion task...
+
+  delegate_to: bastion
