@@ -1,5 +1,29 @@
 ---
-- block:
-  - name: Write bastion tasks here
-    debug:
-      msg: Bastion task...
+- name: Configuration file for local mirrors
+  ansible.builtin.copy:
+    content: |
+      # Mirror for quay.io
+      [[registry]]
+      location = "quay.io"
+
+        [[registry.mirror]]
+        location = "registry:5000"
+        insecure = true
+
+      # Mirror for registry.redhat.io
+      [[registry]]
+      location = "registry.redhat.io"
+
+        [[registry.mirror]]
+        location = "registry:5000"
+        insecure = true
+
+      # Mirror for docker.io
+      [[registry]]
+      location = "docker.io"
+
+        [[registry.mirror]]
+        location = "registry:5000"
+        insecure = true
+    dest: /etc/containers/registries.conf.d/99-mirrors.conf
+    mode: '0644'
