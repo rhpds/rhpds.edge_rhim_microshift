@@ -48,6 +48,11 @@ registry_images_to_mirror:
   - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:58804d8baf922927b66cec9424d431a3bdb341d207024ce40cc8f0123bac03ee
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:54bc30e4861f9734f6921389a7be5ba355e09c702bf7b6b8d1c81cf0330a6fc3
 
+  # Image Mode (bootc) Container Images
+  - registry.redhat.io/rhel9-eus/rhel-9.4-bootc:9.4
+  - registry.redhat.io/rhel9-eus/rhel-9.6-bootc:9.6
+  - registry.redhat.io/rhel9/bootc-image-builder:latest
+
   # Sample Applications (from K8s upstream docs)
   - docker.io/library/wordpress:6.2.1-apache
   - docker.io/library/mysql:8.0
