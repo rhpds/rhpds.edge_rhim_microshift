@@ -27,3 +27,10 @@
         insecure = true
     dest: /etc/containers/registries.conf.d/99-mirrors.conf
     mode: '0644'
+
+- name: Overwrite container policy to insecure
+  ansible.builtin.copy:
+    content: '{"default": [{"type": "insecureAcceptAnything"}]}'
+    dest: /etc/containers/policy.json
+    mode: '0644'
+    backup: yes
