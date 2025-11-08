@@ -36,18 +36,6 @@ registry_images_to_mirror:
   - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:bd6dc4d6e90fdbcdb844759e203c9c591abc5ac29a956257a90bda101a37b76e
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:6771ff316058a27d66103d16d0c8c2f10afb96970026025668aa09d0b9fde5bb
 
-
-  # MicroShift 4.20
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0a9d58f9d8dd969c7bd107319a2498a674fe4e6477185a44558f168d994b39a5
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:54fe7a9a17579203f5cf7d3eae5cbfba051a9f2a98922d6cb19b33c9a2ef1e6c
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0f3b6562297860a94726c550248a910506b8d20ce1204729e11a4086165c1ac5
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:5a8ae4c499eb77d64d2ad321959db0dbb6da86d25b389d7857465140067ef1e8
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:7eb4b2915c31f1960b5dd77536e1b42a34776475a35b92a8f06c64c462a338f0
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:eb6c92d8d659c35575582a0683a711c2b12bdc2f88fa5b5a7f15c715f0850610
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ae6485fac87a0090a3ff180b02e3d767c52fc8134fb8d7cc1b6a0624d5ee984c
-  - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:58804d8baf922927b66cec9424d431a3bdb341d207024ce40cc8f0123bac03ee
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:54bc30e4861f9734f6921389a7be5ba355e09c702bf7b6b8d1c81cf0330a6fc3
-
   # Image Mode (bootc) Container Images
   - registry.redhat.io/rhel9-eus/rhel-9.4-bootc:9.4
   - registry.redhat.io/rhel9-eus/rhel-9.6-bootc:9.6
