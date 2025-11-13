@@ -1,15 +1,4 @@
 ---
-- name: Install python libraries
-  ansible.builtin.pip :
-    name: "{{ item }}"
-    state: present
-  loop:
-    - kubernetes
-
-- name: Install collections
-  ansible.builtin.shell: |
-    ansible-galaxy collection install kubernetes.core
-
 - name: Configuration file for local mirrors
   ansible.builtin.copy:
     content: |
