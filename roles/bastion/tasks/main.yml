@@ -33,4 +33,13 @@
     content: '{"default": [{"type": "insecureAcceptAnything"}]}'
     dest: /etc/containers/policy.json
     mode: '0644'
-    backup: yes
+    backup: true
+
+- name: Clone bootc-embeeded-containers repository
+  ansible.builtin.git:
+    repo: https://github.com/arthur-r-oliveira/bootc-embeeded-containers.git
+    version: rhpds
+    dest: /home/lab-user/bootc-embeeded-containers
+    force: true
+  become: true
+  become_user: lab-user
