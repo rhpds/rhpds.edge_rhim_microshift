@@ -43,3 +43,14 @@
     force: true
   become: true
   become_user: lab-user
+
+- name: Remove excluded files and directories from cloned repository
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /home/lab-user/bootc-embeeded-containers/ansible
+    - /home/lab-user/bootc-embeeded-containers/create-ks.sh
+    - /home/lab-user/bootc-embeeded-containers/.git
+  become: true
+  become_user: lab-user
