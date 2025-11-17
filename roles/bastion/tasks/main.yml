@@ -54,3 +54,80 @@
     - /home/lab-user/bootc-embeeded-containers/.git
   become: true
   become_user: lab-user
+
+- name: Check if virtualization is supported
+  ansible.builtin.command: grep -E 'vmx|svm' /proc/cpuinfo
+  register: cpu_virtualization_check
+  changed_when: false
+  failed_when: false
+
+- name: Fail if virtualization is not supported
+  ansible.builtin.fail:
+    msg: "CPU does not support virtualization (VT-x/AMD-V). KVM cannot be installed."
+  when: cpu_virtualization_check.rc != 0
+
+- name: Install KVM packages
+  ansible.builtin.dnf:
+    name: "{{ kvm_packages }}"
+    state: present
+    update_cache: true
+
+- name: Detect CPU vendor
+  ansible.builtin.shell: set -o pipefail && grep -m1 "^vendor_id" /proc/cpuinfo | awk '{print $3}'
+  register: cpu_vendor
+  changed_when: false
+  when: kvm_load_modules | bool
+
+- name: Load KVM base module
+  ansible.builtin.command: modprobe kvm
+  when: kvm_load_modules | bool
+  changed_when: false
+
+- name: Load KVM Intel module
+  ansible.builtin.command: modprobe kvm_intel
+  when:
+    - kvm_load_modules | bool
+    - cpu_vendor.stdout is defined
+    - "'Intel' in cpu_vendor.stdout or 'GenuineIntel' in cpu_vendor.stdout"
+  failed_when: false
+  changed_when: false
+
+- name: Load KVM AMD module
+  ansible.builtin.command: modprobe kvm_amd
+  when:
+    - kvm_load_modules | bool
+    - cpu_vendor.stdout is defined
+    - "'AMD' in cpu_vendor.stdout or 'AuthenticAMD' in cpu_vendor.stdout"
+  failed_when: false
+  changed_when: false
+
+- name: Ensure KVM modules are loaded at boot
+  ansible.builtin.copy:
+    content: |
+      kvm
+      {% if cpu_vendor.stdout is defined and ('Intel' in cpu_vendor.stdout or 'GenuineIntel' in cpu_vendor.stdout) %}
+      kvm_intel
+      {% elif cpu_vendor.stdout is defined and ('AMD' in cpu_vendor.stdout or 'AuthenticAMD' in cpu_vendor.stdout) %}
+      kvm_amd
+      {% endif %}
+    dest: /etc/modules-load.d/kvm.conf
+    mode: '0644'
+  when: kvm_load_modules | bool
+
+- name: Enable and start libvirtd service
+  ansible.builtin.systemd:
+    name: libvirtd
+    enabled: "{{ kvm_enable_libvirtd | bool }}"
+    state: started
+  when: kvm_enable_libvirtd | bool
+
+- name: Verify KVM is working
+  ansible.builtin.command: virsh list --all
+  register: kvm_verification
+  changed_when: false
+  failed_when: false
+
+- name: Display KVM status
+  ansible.builtin.debug:
+    msg: "KVM installation completed successfully. libvirtd is running."
+  when: kvm_verification.rc == 0

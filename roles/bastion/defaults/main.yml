@@ -1,1 +1,17 @@
 ---
+# KVM packages to install
+kvm_packages:
+  - qemu-kvm
+  - libvirt
+  - virt-install
+  - virt-manager
+  - virt-viewer
+  - libvirt-client
+  - libvirt-daemon
+  - libvirt-daemon-driver-qemu
+
+# Enable and start libvirtd service
+kvm_enable_libvirtd: true
+
+# Load KVM kernel modules
+kvm_load_modules: true
