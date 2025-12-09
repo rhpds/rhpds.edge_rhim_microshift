@@ -1,3 +1,4 @@
+---
 # Mirror container images to local registry
 # Requires: ocp4_pull_secret or ocp4_token variable (from secrets)
 
@@ -23,13 +24,27 @@
   no_log: true
   delegate_to: registry
 
+- name: Create skopeo policy file to allow insecure images
 
-- name: Pull and mirror images to local registry (Using System Policy)
+  ansible.builtin.copy:
+    content: |
+      {
+        "default": [
+          {
+            "type": "insecureAcceptAnything"
+          }
+        ]
+      }
+    dest: /tmp/policy.json
+    mode: '0644'
+  delegate_to: registry
+
+- name: Pull and mirror images to local registry
   ansible.builtin.shell: |
     export REGISTRY_AUTH_FILE=/tmp/pull-secret.json
     SOURCE_IMAGE="{{ item }}"
     DEST_IMAGE="localhost:5000/{{ item | regex_replace('^[^/]+/', '') }}"
-    skopeo copy --all --preserve-digests --dest-tls-verify=false "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
+    skopeo copy --policy /tmp/policy.json --all --preserve-digests --dest-tls-verify=false "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
   loop: "{{ registry_images_to_mirror }}"
   loop_control:
     label: "{{ item }}"
