@@ -1,5 +1,4 @@
 ---
-
 - name: Configuration file for local mirrors
   ansible.builtin.copy:
     content: |
@@ -29,67 +28,9 @@
     dest: /etc/containers/registries.conf.d/99-mirrors.conf
     mode: '0644'
 
-- name: 1. Create containers keys directory for signature verification
-  ansible.builtin.file:
-    path: /etc/containers/keys
-    state: directory
-    mode: '0755'
-    owner: root
-    group: root
-
-- name: 2. Copy custom GPG public key ring for image verification
+- name: Overwrite container policy to insecure
   ansible.builtin.copy:
-    src: pubring.gpg          # MUST be present in your Ansible role's 'files/' directory
-    dest: /etc/containers/keys/pubring.gpg
-    mode: '0644'
-    owner: root
-    group: root
-
-- name: 3. Configure enterprise-compliant container policy with signature verification
-  ansible.builtin.copy:
-    content: |
-      {
-        "default": [
-          {
-            "type": "reject"
-          }
-        ],
-        "transports": {
-          "docker": {
-            "registry:5000": [
-              {
-                "type": "signedBy",
-                "keyType": "GPGKeys",
-                "keyPath": "/etc/containers/keys/pubring.gpg"
-              }
-            ],
-            "registry.redhat.io": [
-              {
-                "type": "signedBy",
-                "keyType": "GPGKeys",
-                "keyPaths": ["/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release", "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-beta"]
-              }
-            ],
-            "registry.access.redhat.com": [
-              {
-                "type": "signedBy",
-                "keyType": "GPGKeys",
-                "keyPaths": ["/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release", "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-beta"]
-              }
-            ],
-            "quay.io": [
-              {
-                "type": "insecureAcceptAnything"
-              }
-            ],
-            "docker.io": [
-              {
-                "type": "insecureAcceptAnything"
-              }
-            ]
-          }
-        }
-      }
+    content: '{"default": [{"type": "insecureAcceptAnything"}]}'
     dest: /etc/containers/policy.json
     mode: '0644'
     backup: true
