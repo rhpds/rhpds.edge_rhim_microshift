@@ -1,4 +1,3 @@
----
 # Mirror container images to local registry
 # Requires: ocp4_pull_secret or ocp4_token variable (from secrets)
 
@@ -24,27 +23,22 @@
   no_log: true
   delegate_to: registry
 
-- name: Create skopeo policy file to allow insecure images
+# --- START: REMOVED INSECURE POLICY TASKS ---
 
-  ansible.builtin.copy:
-    content: |
-      {
-        "default": [
-          {
-            "type": "insecureAcceptAnything"
-          }
-        ]
-      }
-    dest: /tmp/policy.json
-    mode: '0644'
-  delegate_to: registry
+# The previous task 'Create skopeo policy file to allow insecure images' is REMOVED.
+# Rationale: We rely on the Registry Host's default system policy (/etc/containers/policy.json) 
+# which is generally sufficient to handle Red Hat signatures and is more secure.
 
-- name: Pull and mirror images to local registry
+# --- END: REMOVED INSECURE POLICY TASKS ---
+
+- name: Pull and mirror images to local registry (Using System Policy)
   ansible.builtin.shell: |
     export REGISTRY_AUTH_FILE=/tmp/pull-secret.json
     SOURCE_IMAGE="{{ item }}"
     DEST_IMAGE="localhost:5000/{{ item | regex_replace('^[^/]+/', '') }}"
-    skopeo copy --policy /tmp/policy.json --all --preserve-digests --dest-tls-verify=false "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
+    # REMOVED: --policy /tmp/policy.json
+    # skopeo now uses the system's /etc/containers/policy.json, which should preserve signatures.
+    skopeo copy --all --preserve-digests --dest-tls-verify=false "docker://${SOURCE_IMAGE}" "docker://${DEST_IMAGE}"
   loop: "{{ registry_images_to_mirror }}"
   loop_control:
     label: "{{ item }}"
