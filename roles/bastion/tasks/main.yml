@@ -56,7 +56,6 @@
         ],
         "transports": {
           "docker": {
-            # Policy for your local mirror (requires YOUR custom GPG key)
             "registry:5000": [
               {
                 "type": "signedBy",
@@ -64,7 +63,6 @@
                 "keyPath": "/etc/containers/keys/pubring.gpg"
               }
             ],
-            # Policy for official Red Hat images (requires Red Hat GPG keys)
             "registry.redhat.io": [
               {
                 "type": "signedBy",
@@ -79,7 +77,6 @@
                 "keyPaths": ["/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release", "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-beta"]
               }
             ],
-            # Policy for public mirrors (allows unsigned content to be pulled from mirror)
             "quay.io": [
               {
                 "type": "insecureAcceptAnything"
