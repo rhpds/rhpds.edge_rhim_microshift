@@ -28,10 +28,13 @@
     dest: /etc/containers/registries.conf.d/99-mirrors.conf
     mode: '0644'
 
-- name: Overwrite container policy to insecure
+- name: Configure sigstore for registry:5000
   ansible.builtin.copy:
-    content: '{"default": [{"type": "insecureAcceptAnything"}]}'
-    dest: /etc/containers/policy.json
+    dest: /etc/containers/registries.d/registry-5000.yaml
+    content: |
+      docker:
+        registry:5000:
+          sigstore: https://registry.redhat.io/containers/sigstore
     mode: '0644'
     backup: true
 
