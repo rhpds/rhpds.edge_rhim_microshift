@@ -38,11 +38,11 @@
     mode: '0644'
     backup: true
 
-- name: Clone bootc-embeeded-containers repository
+- name: Clone bootc-embedded-containers repository
   ansible.builtin.git:
-    repo: https://github.com/arthur-r-oliveira/bootc-embeeded-containers.git
+    repo: https://github.com/arthur-r-oliveira/bootc-embedded-containers.git
     version: rhpds
-    dest: /home/lab-user/bootc-embeeded-containers
+    dest: /home/lab-user/bootc-embedded-containers
     force: true
   become: true
   become_user: lab-user
@@ -52,9 +52,9 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - /home/lab-user/bootc-embeeded-containers/ansible
-    - /home/lab-user/bootc-embeeded-containers/create-ks.sh
-    - /home/lab-user/bootc-embeeded-containers/.git
+    - /home/lab-user/bootc-embedded-containers/ansible
+    - /home/lab-user/bootc-embedded-containers/create-ks.sh
+    - /home/lab-user/bootc-embedded-containers/.git
   become: true
   become_user: lab-user
 
