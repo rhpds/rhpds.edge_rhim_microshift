@@ -25,16 +25,6 @@ registry_images_to_mirror:
   - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:c5f0ad26372afdd4d3e6a37fdb5cdf0c91304c0e994ec885e2db89e851081504
   - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:49c985f2e3a9c041efc07f046a1d2b2525abf44c8fce2f3d9b816d5505b0913b
 
-  # MicroShift 4.18
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fb00cad5bf4c467ebed7ae645287f5927fd9ef40b4a7b52affa80b024d59d583
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:4f6294ed30ab476019aaaa77874157facc77413988f82ffc46f94d3a98d2e4f1
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e1eb49c0c126c193cd035f844746edd98c6c674fdfa6b822d078d4a491b4834d
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:b6413e64e7d5885315b3cabc65c2af82135ee649b1664976b3d300884d302414
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:04cba22b84d152a979e3199c0d85185975a8f42440a55927e84c831539b1657b
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:2f61599219ee63c77391e05d2e02a8a5baae1c463d0ef965c49a5c470546db90
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:4519833d863edb9decbfc3a3a50a6fb55bea133e46be24d4be83b57ef96bf3e9
-  - registry.redhat.io/lvms4/lvms-rhel9-operator@sha256:bd6dc4d6e90fdbcdb844759e203c9c591abc5ac29a956257a90bda101a37b76e
-  - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:6771ff316058a27d66103d16d0c8c2f10afb96970026025668aa09d0b9fde5bb
 
   # Image Mode (bootc) Container Images
   - registry.redhat.io/rhel9-eus/rhel-9.4-bootc:9.4
@@ -44,3 +34,28 @@ registry_images_to_mirror:
   # Sample Applications (from K8s upstream docs)
   - docker.io/library/wordpress:6.2.1-apache
   - docker.io/library/mysql:8.0
+
+  #CentOs Upstream images for upstream workshop
+
+  - ghcr.io/topolvm/topolvm-with-sidecar:0.36.2
+  - quay.io/jetstack/cert-manager-cainjector:v1.16.1
+  - quay.io/jetstack/cert-manager-controller:v1.16.1
+  - quay.io/jetstack/cert-manager-webhook:v1.16.1
+  - quay.io/okd/scos-content@sha256:61a59398843100c495478949678a0c37b05325f960acda197d1c43afdecb271c
+  - quay.io/okd/scos-content@sha256:459c4a1cef26ce99a3e0ac6706f6dc4ae74077520ca5913142f1879252fc54e0
+  - docker.io/kindest/kindnetd@sha256:7a9c9fa59dd517cdc2c82eef1e51392524dd285e9cf7cb5a851c49f294d6cd11
+  - quay.io/okd/scos-content@sha256:353c0d285cf299d838db5ca9e7220d03c984c92d791d9c20ca4bbc7ecd6dfa6d
+  - quay.io/okd/scos-content@sha256:54079c187b09c1c2b7c4d02be9d439fa3d81ceef5a7de589e82bccc6b2c06737
+  - quay.io/okd/scos-content@sha256:aa36c472584a0c689573eda62e425ebb25452b2a33c5254287950407d4f67f69
+  - quay.io/okd/scos-content@sha256:15f7c73f9dc18306517efbe262185db61897fe61677d8e3d20b9944217d6c915
+  - quay.io/okd/scos-content@sha256:f1ca9a58e0ebd6ede8f22c9695a0c492ae8798f2caf156e5b0a81359d7fca9ad
+  - quay.io/okd/scos-content@sha256:90eb67d5e93e014b8da68330a4b10d044f9c44645c4b77e9e88a7a0bec91f606
+  - quay.io/okd/scos-content@sha256:337207f2739b9f8a62315d7812b6405e9fff8ae1e299ed91dd57c5cc7bf5d6c9
+  - quay.io/okd/scos-content@sha256:b30af9c33bd2e2ff2a6adc7cabbbd7dbc4d0550a8c0fee1ed1d979898311fcb3
+  - quay.io/redhattraining/hello-world-nginx:v1.0
+  - docker.io/library/wordpress:6.2.1-apache
+  - docker.io/library/mysql:8.0
+  - quay.io/centos-bootc/centos-bootc:stream9
+  - quay.io/centos-bootc/centos-bootc:stream10
+  - quay.io/centos-bootc/bootc-image-builder:latest
+
