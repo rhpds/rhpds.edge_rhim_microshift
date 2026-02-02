@@ -47,6 +47,15 @@
   become: true
   become_user: lab-user
 
+- name: Clone bootc-embedded-containers repository
+  ansible.builtin.git:
+    repo: https://github.com/hsirsulw/airgapped-microshift-deployment-centos.git
+    version: main
+    dest: /home/lab-user/bootc-embedded-containers
+    force: true
+  become: true
+  become_user: lab-user
+
 - name: Remove excluded files and directories from cloned repository
   ansible.builtin.file:
     path: "{{ item }}"
