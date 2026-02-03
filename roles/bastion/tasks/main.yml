@@ -143,3 +143,12 @@
   ansible.builtin.debug:
     msg: "KVM installation completed successfully. libvirtd is running."
   when: kvm_verification.rc == 0
+
+- name: Pull MicroShift offline images into root container storage
+  ansible.builtin.command: >
+    podman pull {{ item }}
+  loop:
+    - quay.io/rhn_engineering_hsirsulw/microshift-offline:centos9
+    - quay.io/rhn_engineering_hsirsulw/microshift-offline:centos10
+  become: true
+  changed_when: false
