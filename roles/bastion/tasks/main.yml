@@ -51,7 +51,7 @@
   ansible.builtin.git:
     repo: https://github.com/hsirsulw/airgapped-microshift-deployment-centos.git
     version: main
-    dest: /home/lab-user/bootc-embedded-airgapped
+    dest: /home/lab-user/airgapped-bootc-embedded
     force: true
   become: true
   become_user: lab-user
