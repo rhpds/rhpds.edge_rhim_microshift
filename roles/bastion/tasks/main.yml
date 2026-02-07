@@ -148,12 +148,12 @@
   ansible.builtin.command: >
     podman build -t microshift-offline:c9 .
   args:
-    chdir: /home/lab-user/bootc-embedded-airgapped
+    chdir: /home/lab-user/airgapped-bootc-embedded
   become: true
 
 - name: Pre-build MicroShift offline image for CentOS 10
   ansible.builtin.command: >
     podman build -f Containerfile.c10 -t microshift-offline:c10
   args:
-    chdir: /home/lab-user/bootc-embedded-airgapped
+    chdir: /home/lab-user/airgapped-bootc-embedded
   become: true
