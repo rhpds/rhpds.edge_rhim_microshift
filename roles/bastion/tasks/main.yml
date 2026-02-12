@@ -158,13 +158,4 @@
     chdir: /home/lab-user/airgapped-bootc-embedded
   become: true
 
-- name: Ensure lab-user tmux config exists
-  ansible.builtin.copy:
-    dest: /home/lab-user/.tmux.conf
-    content: |
-      set -g mouse on
-      set -g history-limit 50000
-    owner: lab-user
-    group: lab-user
-    mode: '0644'
     
