@@ -144,18 +144,26 @@
     msg: "KVM installation completed successfully. libvirtd is running."
   when: kvm_verification.rc == 0
 
-- name: Pre-build MicroShift offline image for CentOS 9
+- name: Pre-build MicroShift offline image for Base
   ansible.builtin.command: >
-    podman build -t microshift-offline:c9 .
+    bash -x build-base.sh 2>&1 | tee build-base.log
   args:
-    chdir: /home/lab-user/airgapped-bootc-embedded
+    chdir: /home/lab-user/bootc-embedded-containers
   become: true
 
-- name: Pre-build MicroShift offline image for CentOS 10
+- name: Pre-build MicroShift offline image for 4.19
   ansible.builtin.command: >
-    podman build -f Containerfile.c10 -t microshift-offline:c10
+    bash -x build.sh 4.19 2>&1 | tee build-4.19.log
   args:
-    chdir: /home/lab-user/airgapped-bootc-embedded
+    chdir: /home/lab-user/bootc-embedded-containers
   become: true
+  
+- name: Pre-build MicroShift offline image for 4.20
+  ansible.builtin.command: >
+    bash -x build.sh 4.20 2>&1 | tee build-4.20.log
+  args:
+    chdir: /home/lab-user/bootc-embedded-containers
+  become: true
+
 
     
